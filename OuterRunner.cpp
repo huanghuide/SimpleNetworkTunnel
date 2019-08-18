@@ -53,7 +53,7 @@ void OuterRunner::SocketRead(int sockFd)
 
             if (recvLen > 0)
             {
-            	if (gRoleType == CLIENT)
+            	if ((gRoleType == MIDDLE) || (gRoleType == CLIENT))
             	{
             		for (int index = 0; index < recvLen; index++)
             		{
@@ -150,7 +150,7 @@ void OuterRunner::SendPendingMsg()
             //printf("Sending message to the remote server. SockFd %d, msgLen %d\n", mSockFd, msgLen);
             //PrintBuf(msgBuf, msgLen);
 
-        	if (gRoleType == CLIENT)
+        	if ((gRoleType == MIDDLE) || (gRoleType == CLIENT))
         	{
         		for (int index = 0; index < msgLen; index++)
         		{

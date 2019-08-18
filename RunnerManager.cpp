@@ -43,7 +43,7 @@ void RunnerManager::RunnerTimeout()
 
     std::map<int, Runner*>::iterator mapIter = mSockRunnerMap.begin();
     while (mapIter != mSockRunnerMap.end())
-    {
+    {
         keySet.insert(mapIter->first);
         //printf("RunnerTimeout: key is %d\n", mapIter->first);
     

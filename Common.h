@@ -54,6 +54,7 @@ enum RunnerType
 enum RoleType
 {
 	CLIENT,
+    MIDDLE,
 	SERVER
 };
 

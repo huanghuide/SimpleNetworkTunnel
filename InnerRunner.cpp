@@ -70,7 +70,7 @@ void InnerRunner::SocketRead(int sockFd)
                 mOuterRunner = new OuterRunner(this);
             }
 
-        	if (gRoleType == SERVER)
+        	if ((gRoleType == MIDDLE) || (gRoleType == SERVER))
         	{
         		for (int index = 0; index < recvLen; index++)
         		{
@@ -141,7 +141,7 @@ void InnerRunner::SendPendingMsg()
             //printf("INNER: Send message to client. mSockFd %d, length %d\n", mSockFd, msgLen);
             //PrintBuf(msgBuf, msgLen);
 
-        	if (gRoleType == SERVER)
+        	if ((gRoleType == MIDDLE) || (gRoleType == SERVER))
         	{
         		for (int index = 0; index < msgLen; index++)
         		{

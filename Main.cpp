@@ -27,6 +27,10 @@ void ParseParamsAndInit(int argc, char *argv[])
 			{
 				gRoleType = CLIENT;
 			}
+            else if (strcmp(optarg, "middle") == 0)
+			{
+				gRoleType = MIDDLE;
+			}
 			else
 			{
 				gRoleType = SERVER;
@@ -52,8 +56,8 @@ void ParseParamsAndInit(int argc, char *argv[])
 	gInnerInitiator = new InnerInitiator(gInnerListenPort);
 
 	// Print the parameters
-	gLog.Write("role: %s; inner listen port: %d; output dst IP: %s; outer dst port %d",
-			((gRoleType == CLIENT) ? "client" : "server"), gInnerListenPort, gOuterDstIpAddr, gOuterDstPort);
+	gLog.Write("role: %d; inner listen port: %d; output dst IP: %s; outer dst port %d",
+			gRoleType, gInnerListenPort, gOuterDstIpAddr, gOuterDstPort);
 }
 
 int main(int argc, char *argv[])

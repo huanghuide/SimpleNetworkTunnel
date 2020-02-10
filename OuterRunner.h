@@ -40,8 +40,10 @@ protected:
     void ProcessEstablishedStatus();
     
     InnerRunner* mInnerRunner;
-    
     RunnerStatus mSendStatus;
+
+    string mDstIpAddr;
+    int mDstPort;
 };
 
 #endif

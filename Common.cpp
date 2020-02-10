@@ -17,9 +17,11 @@ bool gStopFlag = false;
 
 RoleType gRoleType = SERVER;
 int gInnerListenPort = BB_LISTEN_PORT;
-char gOuterDstIpAddr[20];
-int gOuterDstPort = BB_SQUID_PORT;
 
+std::string gOuterDstIpAddrArray[MAX_DST_NUM];
+int gOuterDstPortArray[MAX_DST_NUM];
+int gOuterDstCounter = 0;
+int gOuterRunnerCounter = 0;
 
 Log gLog;
 RunnerManager gRunnerManager;

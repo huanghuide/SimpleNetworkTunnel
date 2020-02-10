@@ -33,6 +33,11 @@ OuterRunner::OuterRunner(InnerRunner* innerRunner) :
     mInnerRunner(innerRunner),
     mSendStatus(INIT)
 {
+    mDstIpAddr = gOuterDstIpAddrArray[gOuterRunnerCounter % gOuterDstCounter];
+    mDstPort = gOuterDstPortArray[gOuterRunnerCounter % gOuterDstCounter];
+
+    gOuterRunnerCounter++;
+    gOuterRunnerCounter = gOuterRunnerCounter % gOuterDstCounter;
 }
 
 OuterRunner::~OuterRunner()
@@ -254,8 +259,8 @@ void OuterRunner::ProcessInitStatus()
     
     bzero(&addr, sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(gOuterDstPort);
-    addr.sin_addr.s_addr = inet_addr(gOuterDstIpAddr);
+    addr.sin_port = htons(mDstPort);
+    addr.sin_addr.s_addr = inet_addr(mDstIpAddr.c_str());
 
     int retConn = connect(mSockFd, (sockaddr*)&addr, sizeof(addr));
     
@@ -296,8 +301,8 @@ void OuterRunner::ProcessConnectingStatus()
         
         bzero(&addr, sizeof(addr));
         addr.sin_family = AF_INET;
-        addr.sin_port = htons(gOuterDstPort);
-        addr.sin_addr.s_addr = inet_addr(gOuterDstIpAddr);
+        addr.sin_port = htons(mDstPort);
+        addr.sin_addr.s_addr = inet_addr(mDstIpAddr.c_str());
 
         int retConn = connect(mSockFd, (sockaddr*)&addr, sizeof(addr));
         

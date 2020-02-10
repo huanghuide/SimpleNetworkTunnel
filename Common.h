@@ -26,6 +26,8 @@ using namespace std;
 #define UINT32  unsigned int
 #define UINT64  unsigned long long
 
+#define MAX_DST_NUM    200
+
 #define BB_LISTEN_PORT  7777
 #define BB_CTRL_PORT    8888
 #define BB_ADMIN_PORT   9999
@@ -60,8 +62,11 @@ enum RoleType
 
 extern RoleType gRoleType;
 extern int gInnerListenPort;
-extern char gOuterDstIpAddr[20];
-extern int gOuterDstPort;
+
+extern std::string gOuterDstIpAddrArray[MAX_DST_NUM];
+extern int gOuterDstPortArray[MAX_DST_NUM];
+extern int gOuterDstCounter;
+extern int gOuterRunnerCounter;
 
 class Log;
 class Runner;

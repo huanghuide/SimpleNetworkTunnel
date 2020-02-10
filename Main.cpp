@@ -5,6 +5,35 @@
 #include "RunnerManager.h"
 #include "Log.h"
 
+void ParseIpPort(char* ipPortStr)
+{
+    gLog.Write("ipPortStr is %s", ipPortStr);
+
+    if (ipPortStr != NULL)
+    {
+        char* pos = strchr(ipPortStr, ':');
+        if (pos != NULL)
+        {
+            char tmp[200];
+            int ipStrLen = pos - ipPortStr;
+
+            memcpy(tmp, ipPortStr, ipStrLen);
+            tmp[ipStrLen] = '\0';
+
+            string ipAddr(tmp);            
+            int port = atoi(pos + 1);
+
+            if ((ipAddr.length() > 0) && (port > 0))
+            {
+                gLog.Write("gOuterDstCounter is %d, ipAddr %s, port %d", gOuterDstCounter, ipAddr.c_str(), port);
+                gOuterDstIpAddrArray[gOuterDstCounter] = ipAddr;
+                gOuterDstPortArray[gOuterDstCounter] = port;
+                gOuterDstCounter++;
+            }
+        }
+    }
+}
+
 void ParseParamsAndInit(int argc, char *argv[])
 {
 	int ch;
@@ -13,16 +42,14 @@ void ParseParamsAndInit(int argc, char *argv[])
 	// Default setting
 	gRoleType = SERVER;
 	gInnerListenPort = BB_LISTEN_PORT;
-	memset(gOuterDstIpAddr, 0, 20);
-	memcpy(gOuterDstIpAddr, BB_SQUID_ADDR, strlen(BB_SQUID_ADDR));
-	gOuterDstPort = BB_SQUID_PORT;
 
 	// Read parameters
-	while ((ch = getopt(argc, argv, "r:l:o:p:")) != EOF)
+	while ((ch = getopt(argc, argv, "r:l:o:")) != EOF)
 	{
 		switch (ch)
 		{
 		case 'r': // Role
+            gLog.Write("Param (r): %s", optarg);
 			if (strcmp(optarg, "client") == 0)
 			{
 				gRoleType = CLIENT;
@@ -39,25 +66,19 @@ void ParseParamsAndInit(int argc, char *argv[])
 			break;
 
 		case 'l': // inner listen port
+            gLog.Write("Param (l): %s", optarg);
 			gInnerListenPort = atoi(optarg);
 			break;
 
 		case 'o': // outer dest IP address
-			strcpy(gOuterDstIpAddr, optarg);
-			break;
-
-		case 'p': // outer dest TCP port
-			gOuterDstPort = atoi(optarg);
+            gLog.Write("Param (o): %s", optarg);
+            ParseIpPort(optarg);
 			break;
 		}
 	}
 
 	// Init variables
 	gInnerInitiator = new InnerInitiator(gInnerListenPort);
-
-	// Print the parameters
-	gLog.Write("role: %d; inner listen port: %d; output dst IP: %s; outer dst port %d",
-			gRoleType, gInnerListenPort, gOuterDstIpAddr, gOuterDstPort);
 }
 
 int main(int argc, char *argv[])
